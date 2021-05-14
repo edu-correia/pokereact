@@ -1,0 +1,67 @@
+.lp-header{
+    width: 80%;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lp-header h1{
+    font-family: 'Bangers', sans-serif;
+    font-weight: normal;
+    font-size: 64px;
+    color: var(--primary-color);
+}
+
+.lp-header p{
+    width: 200px;
+    word-wrap: normal;
+    text-align: right;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.lp-description{
+    width: 80%;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lp-description p{
+    width: 400px;
+    word-wrap: normal;
+    text-align: center;
+    font-family: 'Reem Kufi';
+    font-size: 24px;
+}
+
+.lp-description a{
+    display: block;
+    margin-top: 70px;
+    width: 400px;
+    height: 70px;
+    background: var(--primary-color);
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    color: var(--text-color);
+    font-family: 'Bangers', sans-serif;
+    text-decoration: none;
+    font-size: 40px;
+    box-shadow: 0 4px var(--secondary-color);
+}
+
+.lp-description a:active{
+    box-shadow: 0 2px var(--secondary-color);
+    transform: translateY(2px);
+}
+
+.lp-img{
+    height: 70vh;
+    width: auto;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

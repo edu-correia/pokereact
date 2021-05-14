@@ -1,0 +1,30 @@
+/* Pokedex */
+.pokedex{
+    width: 80vw;
+    margin: 50px 10vw 50px 10vw;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.btns{
+    width: 80vw;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 10vw 20px 10vw;
+}
+
+.btns a{
+    width: 100px;
+    height: 40px;
+    background-color: var(--text-color);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    color: var(--bg-color);
+    text-decoration: none;
+    font-family: 'Quicksand', sans-serif;
+}
