@@ -1,51 +1,85 @@
+import {useState, useEffect} from 'react';
+import {useParams} from 'react-router-dom';
+
+import api from '../../services/api';
+
+import Header from '../../components/Header';
+
 import './styles.css';
 
-function Pokemon(){
+function Pokemon(){ //abilities, name, weight, height, stats, sprites
+    const [abilities, setAbilities] = useState([]);
+    const [name, setName] = useState("");
+    const [weight, setWeight] = useState(0);
+    const [height, setHeight] = useState(0);
+    const [stats, setStats] = useState([]);
+    const [sprites, setSprites] = useState([]);
+    const {pokemonId} = useParams();
+
+    useEffect(async () => {
+        const {data} = await api.get(`/pokemon/${pokemonId}`);
+
+        setAbilities(data.abilities);
+        setName(data.name);
+        setWeight(data.weight);
+        setHeight(data.height);
+        setStats(data.stats);
+
+        const sprites = [];
+        Object.keys(data.sprites).forEach(key => {
+            const value = data.sprites[key];
+            if(typeof value === 'string'){
+                sprites.push(value);
+            }
+        })
+
+        setSprites(sprites);
+    }, [])
+
     return(
-        <div className="content">
-            <div className="images">
-                <img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/1.png?raw=true" alt="" className="main-img" />
-                <div className="img-versions">
-                    <div><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/1.png?raw=true" alt="" /></div>
-                    <div><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/1.png?raw=true" alt="" /></div>
-                    <div><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/1.png?raw=true" alt="" /></div>
-                    <div><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/1.png?raw=true" alt="" /></div>
-                    <div><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/1.png?raw=true" alt="" /></div>
-                    <div><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/1.png?raw=true" alt="" /></div>
-                    <div><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/1.png?raw=true" alt="" /></div>
-                    <div><img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/1.png?raw=true" alt="" /></div>
-                </div>
-            </div>
-            <div className="info">
-                <h2>Charizard</h2>
-                <div className="powers">
-                    <p>Poderes:</p>
-                    <div>
-                        <span>Solar-power</span>
-                        <span>Blaze</span>
+        <div>
+            <Header />
+            <div className="content">
+                <div className="images">
+                    <img src={`https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${pokemonId}.png?raw=true`} alt="" className="main-img" />
+                    <div className="img-versions">
+                        {sprites.map(sprite => {
+                            return (
+                                <div>
+                                    <img src={sprite} alt={name}/>
+                                </div>
+                            )
+                        })}
+                        
                     </div>
                 </div>
-                <div className="weight">
-                    <p>Peso:</p>
-                    <span>90 kg</span>
-                </div>
-                <div className="height">
-                    <p>Altura:</p>
-                    <span>1.7 m</span>
-                </div>
-                <div className="stats">
-                    <p>Estatísticas:</p>
-                    <div>
-                        <p>hp</p>
-                        <span>100</span>
+                <div className="info">
+                    <h2>{name}</h2>
+                    <div className="powers">
+                        <p>Poderes:</p>
+                        <div>
+                            {abilities.map(ability => <span>{ability.ability.name}</span> )}
+                        </div>
                     </div>
-                    <div>
-                        <p>attack:</p>
-                        <span>60</span>
+                    <div className="weight">
+                        <p>Peso:</p>
+                        <span>{weight/10} kg</span>
                     </div>
-                    <div>
-                        <p>strength:</p>
-                        <span>34</span>
+                    <div className="height">
+                        <p>Altura:</p>
+                        <span>{height/10} m</span>
+                    </div>
+                    <div className="stats">
+                        <p>Estatísticas:</p>
+                        {stats.map(stat => {
+                            return (
+                                <div>
+                                    <p>{stat.stat.name}:</p>
+                                    <span>{stat.base_stat}</span>
+                                </div>
+                            )
+                        })}
+                        
                     </div>
                 </div>
             </div>

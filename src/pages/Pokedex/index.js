@@ -1,3 +1,9 @@
+import {useState, useEffect} from 'react';
+import {Link, useParams} from 'react-router-dom';
+
+import api from '../../services/api';
+import getIndexFromUrl from '../../utils/getIndexFromUrl';
+
 import PokedexItem from '../../components/PokedexItem';
 import Header from '../../components/Header';
 
@@ -7,7 +13,22 @@ import PrevImg from '../../assets/icons/prev.svg';
 import './styles.css';
 
 function Pokedex(){
-    
+    const [pokemons, setPokemons] = useState([]);
+    const [next, setNext] = useState(null);
+    const [prev, setPrev] = useState(null);
+
+
+    const {page} = useParams();
+
+    useEffect(async () => {
+        const {data} = await api.get(`/pokemon?offset=${Number(page)*15}&limit=15`);
+
+        console.log(data.next, data.previous);
+
+        setPokemons(data.results);
+        setNext(data.next);
+        setPrev(data.previous);
+    }, [page]);
 
     return (
         <div>
@@ -16,28 +37,27 @@ function Pokedex(){
 
             {/* Pokedex */}
             <div className="pokedex">
-                <PokedexItem 
-                    index={1}
-                    name="Pokemon"
-                />
-
-                <PokedexItem 
-                    index={2}
-                    name="Zeca"
-                />
+                {pokemons.map(pokemon => {
+                    return (
+                        <PokedexItem 
+                            index={getIndexFromUrl(pokemon.url)}
+                            name={pokemon.name}
+                        />
+                    )
+                })}
                 
             </div>
 
             {/* Paginação */}
             <div className="btns">
-                <a href="#" className="prev">
+                <Link to={prev === null ? '/pokedex/0' : `/pokedex/${Number(page)-1}`} className="prev">
                     <img src={PrevImg} alt="" />
                     <span>Anterior</span>
-                </a>
-                <a href="#" className="next">
+                </Link>
+                <Link to={next === null ? '/pokedex/0' : `/pokedex/${Number(page)+1}`} className="next">
                     <span>Próxima</span>
                     <img src={NextImg} alt="" />
-                </a>
+                </Link>
             </div>
         </div>
     )
